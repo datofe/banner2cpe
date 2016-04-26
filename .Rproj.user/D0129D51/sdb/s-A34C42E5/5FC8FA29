@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "Package: banner2cpe\nTitle: Find CPEs given a banner\nVersion: 0.1\nAuthors@R: c(\n  person(\"David\", email = \"dl@nomail.io\", role = \"aut\"),\n  person(\"Fernando\", email = \"fg@nomail.io\", role = \"aut\"),\n  person(\"Antonio\", email = \"al@nomail.io\", role = c(\"aut\", \"cre\")))\nDescription: R functions to find CPEs given a banner\nDepends:\n    R (>= 3.2.4)\nImports:\n    sets,\n    tm,\n    XML\nLicense: MIT\nLazyData: true\nURL: https://github.com/good-student/banner2cpe\nBugReports: https://github.com/good-student/banner2cpe/issues\nRoxygenNote: 5.0.1\nSuggests: testthat\n",
+    "created" : 1461604629858.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "732312293",
+    "id" : "5FC8FA29",
+    "lastKnownWriteTime" : 1461604950,
+    "last_content_update" : 1461604950,
+    "path" : "~/Data/banner2cpe/DESCRIPTION",
+    "project_path" : "DESCRIPTION",
+    "properties" : {
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "dcf"
+}

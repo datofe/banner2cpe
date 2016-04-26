@@ -1,0 +1,20 @@
+Package: banner2cpe
+Title: Find CPEs given a banner
+Version: 0.1
+Authors@R: c(
+  person("David", email = "dl@nomail.io", role = "aut"),
+  person("Fernando", email = "fg@nomail.io", role = "aut"),
+  person("Antonio", email = "al@nomail.io", role = c("aut", "cre")))
+Description: R functions to find CPEs given a banner
+Depends:
+    R (>= 3.2.4)
+Imports:
+    sets,
+    tm,
+    XML
+License: MIT
+LazyData: true
+URL: https://github.com/good-student/banner2cpe
+BugReports: https://github.com/good-student/banner2cpe/issues
+RoxygenNote: 5.0.1
+Suggests: testthat
