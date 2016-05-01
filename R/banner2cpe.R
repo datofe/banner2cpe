@@ -35,28 +35,25 @@ cleanSentence <- function(s) {
 #' resultados por CPE, sumando los factores parciales de cada uno de ellos y obteniendo un resultado final por cada CPE. Éstos se ordenan
 #' por su factor y se devuelve los diez CPEs con el mejor factor de concordancia.
 #'
-#' @param banner 
-#'
-#' @return
-#' @export
-#'
-#' @examples
+#' @param banner El banner que se le deben de pasar para sacar el CPE
+#' @return a matrix of probabilities
+#' 
 findCPE <- function(banner){
-  if(exists("dataFrame") == FALSE){
-    load(file = 'R/dataFrame.rda')
-    load(file = 'R/titlesWordList.rda')
+  if (exists("dataFrame") == FALSE){
+    load(file = './R/dataFrame.rda')
+    load(file = './R/titlesWordList.rda')
     dataFrame <<- dataFrame
     titlesWordList <<- titlesWordList
   }
   st <- Sys.time()
   print(banner)
   bannerSet <- prepareBanner(banner, titlesWordList)
-  print(bannerSet)
+  #print(bannerSet)
   ndf <- NULL
   i <- 0
   lbs <- length(bannerSet)
   rdf <- sapply(bannerSet, function(word){
-    print(word)
+  #  print(word)
     factor <- (lbs - i) / lbs
     pattern <- paste('(^| )', word, '( |$)', sep = '')
     dataframeWithWord <- dataFrame[grep(pattern, dataFrame$titles), ]
@@ -75,8 +72,8 @@ findCPE <- function(banner){
 
 #' FindCPEWithWord
 #'
-#' Devuelve los CPEs que concuerdan mejor entre el banner y un conjunto de títulos dado (un subconjunto formado por títulos que contienen
-#' una palabra del banner).
+#' Devuelve los CPEs que concuerdan mejor entre el banner y un conjunto de títulos
+#' dado (un subconjunto formado por títulos que contienen una palabra del banner).
 #'
 #' @param banner 
 #' @param df 
@@ -87,7 +84,7 @@ findCPE <- function(banner){
 #'
 #' @examples
 FindCPEwithWord <- function(banner, df, factor){
-  print(factor)
+  #print(factor)
   percentages <- similarity(banner, df$titlesSet) * factor
   cutScore <- 0
   ndf <- data.frame(names = unlist(df$names)[percentages > cutScore], 
@@ -101,11 +98,11 @@ FindCPEwithWord <- function(banner, df, factor){
 
 # Función genérica que carga un fichero (indicado como parámetro) y devuelve un conjunto de palabras.
 
-getFromFile<- function(filePath){
+getFromFile <- function(filePath){
   st <- Sys.time()
   words <- scan(filePath, what = 'character', sep = '\n')
   et <- Sys.time()
-  print(et - st)
+  #print(et - st)
   sets::as.set(words)
 }
 
@@ -118,17 +115,17 @@ loadXML <- function(xmlFile){
   nameSpace <- XML::xmlNamespace(rootNode)
   print('[+] XML loaded')
   et <- Sys.time()
-  print(et - st)
+  #print(et - st)
   cpeNames <- '/ns:cpe-list/ns:cpe-item'
   names <- XML::xpathApply(rootNode, cpeNames, XML::xmlGetAttr, 'name', namespaces = c(ns = nameSpace))
   print('[+] Names loaded')
   et <- Sys.time()
-  print(et - st)
+  #print(et - st)
   cpeTitles <- '/ns:cpe-list/ns:cpe-item/ns:title[@xml:lang="en-US"]'
   titles <- XML::xpathSApply(rootNode, cpeTitles, XML::xmlValue, namespaces = c(ns = nameSpace))
   print('[+] Titles loaded')
   et <- Sys.time()
-  print(et - st)
+  #print(et - st)
   cbind(names, titles)
 }
 
@@ -149,7 +146,7 @@ prepareBanner <- function(b, wl) {
   words <- strsplit(cleanSentence(b), ' ')[[1]]
   fs <- NULL
   sapply(words, function(x){
-    if(length(sets::as.set(x) & r) == 1){
+    if (length(sets::as.set(x) & r) == 1){
       fs <<- paste(fs, x)
     }
   })
@@ -163,16 +160,16 @@ prepareDataframe <- function(m) {
   t <- sapply(m[, 2], cleanSentence)
   print('[+] Titles ready')
   et <- Sys.time()
-  print(et - st)
+  #print(et - st)
   ts <- lapply(t, sentenceToSet)
   print('[+] TitlesSet ready')
   et <- Sys.time()
-  print(et - st)
+  #print(et - st)
   ndf <- as.data.frame(cbind(m[, 1], t, ts))
   colnames(ndf) <- c('names', 'titles', 'titlesSet')
   print('[+] Dataframe ready')
   et <- Sys.time()
-  print(et - st)
+  #print(et - st)
   ndf
 }
 
@@ -185,12 +182,12 @@ prepareDataframe <- function(m) {
 #'
 #' @examples
 prepareGlobalVars <- function(){
-  xmlFile <- 'inst/exdata/official-cpe-dictionary_v2.3.xml'
+  xmlFile <- './inst/exdata/official-cpe-dictionary_v2.3.xml'
   matrix <- loadXML(xmlFile)
   dataFrame <- prepareDataframe(matrix)
-  titlesWordList <- getFromFile('inst/exdata/titlesWithoutStopWords.txt')
-  save(dataFrame, file = 'R/dataFrame.rda')
-  save(titlesWordList, file = 'R/titlesWordList.rda')
+  titlesWordList <- getFromFile('./inst/exdata/titlesWithoutStopWords.txt')
+  save(dataFrame, file = './R/dataFrame.rda')
+  save(titlesWordList, file = './R/titlesWordList.rda')
 }
 
 # Dado un string lo convierte en un conjunto de palabras
@@ -201,7 +198,7 @@ sentenceToSet <- function(sentence) {
   uw <- unique(w)
   fs <- NULL
   sapply(uw, function(x){
-    if(nchar(x) > 1){
+    if (nchar(x) > 1){
       fs <<- paste(fs, x)
     }
   })
