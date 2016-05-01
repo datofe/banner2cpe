@@ -2,6 +2,21 @@
 #comm -23 titles.txt ourStopWords.txt > titlesWithoutStopWords.txt
 
 
+
+
+
+
+#' cleanSentence
+#'
+#' Sustituye del string s los caracteres especiales por espacio, espacios dobles por espacio, elimina stopwords, y lo convierte en minúsculas.
+#'  
+#'
+#' @param s 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 cleanSentence <- function(s) {
   s <- gsub('[])/,([]', ' ', s)
   s <- gsub('[-_:]', ' ', s)
@@ -14,6 +29,11 @@ cleanSentence <- function(s) {
 
 
 #' findCPE
+#'
+#' Recibe un banner, lo normaliza, por cada una de las palabras que contiene el banner, obtiene los títulos en los que están presentes,
+#' y, mediante una función de similitud (índice Jaccard), obtiene un factor de concordancia parcial. Con este resultado, agrupa los 
+#' resultados por CPE, sumando los factores parciales de cada uno de ellos y obteniendo un resultado final por cada CPE. Éstos se ordenan
+#' por su factor y se devuelve los diez CPEs con el mejor factor de concordancia.
 #'
 #' @param banner 
 #'
@@ -51,6 +71,21 @@ findCPE <- function(banner){
   tmp[order(-tmp$factor), ]
 }
 
+
+
+#' FindCPEWithWord
+#'
+#' Devuelve los CPEs que concuerdan mejor entre el banner y un conjunto de títulos dado (un subconjunto formado por títulos que contienen
+#' una palabra del banner).
+#'
+#' @param banner 
+#' @param df 
+#' @param factor 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 FindCPEwithWord <- function(banner, df, factor){
   print(factor)
   percentages <- similarity(banner, df$titlesSet) * factor
@@ -63,6 +98,9 @@ FindCPEwithWord <- function(banner, df, factor){
   ndf
 }
 
+
+# Función genérica que carga un fichero (indicado como parámetro) y devuelve un conjunto de palabras.
+
 getFromFile<- function(filePath){
   st <- Sys.time()
   words <- scan(filePath, what = 'character', sep = '\n')
@@ -70,6 +108,8 @@ getFromFile<- function(filePath){
   print(et - st)
   sets::as.set(words)
 }
+
+# Carga el fichero xml, lo parsea y devuelve una matriz de caracteres.
 
 loadXML <- function(xmlFile){
   st <- Sys.time()
@@ -92,6 +132,17 @@ loadXML <- function(xmlFile){
   cbind(names, titles)
 }
 
+#' Title
+#'
+#' Normaliza el banner, y elimina todas aquellas palabras que no estén contenidas en la lista de títulos.
+#'
+#' @param b 
+#' @param wl 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 prepareBanner <- function(b, wl) {
   bs <- sentenceToSet(cleanSentence(b))
   r <- bs & wl
@@ -104,6 +155,8 @@ prepareBanner <- function(b, wl) {
   })
   sentenceToSet(cleanSentence(fs))
 }
+
+# Modificamos la matriz añadiendo una tercera columna que contiene los títulos de los CPEs en conjuntos de palabras, devolviendo un data frame.
 
 prepareDataframe <- function(m) {
   st <- Sys.time()
@@ -125,6 +178,8 @@ prepareDataframe <- function(m) {
 
 #' prepareGlobalVars
 #'
+#' Carga de distintos ficheros información y lo vuelca en variables globales, utilizadas para el correcto funcionamiento de todas las funciones. 
+#'
 #' @return
 #' @export
 #'
@@ -138,6 +193,8 @@ prepareGlobalVars <- function(){
   save(titlesWordList, file = 'R/titlesWordList.rda')
 }
 
+# Dado un string lo convierte en un conjunto de palabras
+
 sentenceToSet <- function(sentence) {
   s <- as.character(sentence)
   w <- strsplit(s, ' ')[[1]]
@@ -150,6 +207,8 @@ sentenceToSet <- function(sentence) {
   })
   sets::as.cset(strsplit(cleanSentence(fs), ' ')[[1]])
 }
+
+# Función que compara dos conjuntos de palabras y devuelve un factor de concordancia, en función de su similitud.
 
 similarity <- function(sa, list){
   percentages <- sapply(list, function(sb){
