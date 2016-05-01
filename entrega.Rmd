@@ -1,6 +1,6 @@
 ---
 title: "Banner2CPE"
-author: "Fernando Gordo, Antonio López, David Lozano"
+author: "Fernando, Antonio, David"
 date: "26 de abril de 2016"
 output: html_document
 ---
@@ -52,6 +52,38 @@ Los Banners los incorporamos a mano, aunque en un futuro se podrá usar otra fue
 
 Del XML nos quedamos sólo con el name y el title de los CPE's. El Banner lo hacemos pasar por un proceso en el que se sustituyen caracteres especiales por espacios, se eliminan stopwords y se convierte todo en minúsculas. Además, eliminamos todas aquellas palabras que no salen en el conjunto de palabras formado portodos los titles de CPE's.
 
+
+#### Análisis de exploración de datos
+
+Hemos analizado los datos del fichero de CPEs desde tres puntos de vista: 
+
+(Para todos los gráficos, sól mostramos los 10 más relevantes)
+
+1. Tipo de activo: aplicación / Sistema Operativo / Hardware
+
+```{r grafico1, cache=TRUE}
+library("ggplot2")
+plot1 <- read.csv('inst/exdata/Part.txt', header= FALSE, sep=";")
+colnames(plot1) <- c('cantidad','tipo')
+ggplot(tail(plot1, n=10), aes(tipo,cantidad)) + geom_bar(aes(fill=tipo),position="dodge",stat="identity")
+
+```
+
+2. Fabricante
+
+```{r grafico2, cache=TRUE}
+plot2 <- read.csv('inst/exdata/Vendor.txt', header= FALSE, sep=";")
+colnames(plot2) <- c('cantidad','tipo')
+ggplot(tail(plot2, n=10), aes(tipo,cantidad)) + geom_bar(aes(fill=tipo),position="dodge",stat="identity")
+```
+
+3. Producto
+
+```{r grafico3, cache=TRUE}
+plot3 <- read.csv('inst/exdata/Product.txt', header= FALSE, sep=";")
+colnames(plot3) <- c('cantidad','tipo')
+ggplot(tail(plot3, n=10), aes(tipo,cantidad)) + geom_bar(aes(fill=tipo),position="dodge",stat="identity")
+```
 
 
 
