@@ -1,6 +1,6 @@
 ---
 title: "Banner2CPE"
-author: "Fernando Gordo, Antonio López, David Lozano"
+author: "Fernando , Antonio López, David Lozano"
 date: "26 de abril de 2016"
 output: html_document
 ---
