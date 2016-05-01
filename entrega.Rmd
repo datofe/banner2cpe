@@ -100,7 +100,7 @@ prepareGlobalVars <- function(){
 ```{r prepararBanner , echo=FALSE}
 load(file = 'R/dataFrame.rda')
 load(file = 'R/titlesWordList.rda')
-banner2cpe::prepareBanner(banner, titlesWordList)
+banner2cpe:::prepareBanner(banner, titlesWordList)
 
 ```
 

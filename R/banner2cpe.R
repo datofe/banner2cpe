@@ -37,7 +37,7 @@ cleanSentence <- function(s) {
 #'
 #' @param banner El banner que se le deben de pasar para sacar el CPE
 #' @return a matrix of probabilities
-#' 
+#' @export
 findCPE <- function(banner){
   if (exists("dataFrame") == FALSE){
     load(file = './R/dataFrame.rda')
@@ -146,7 +146,7 @@ prepareBanner <- function(b, wl) {
   words <- strsplit(cleanSentence(b), ' ')[[1]]
   fs <- NULL
   sapply(words, function(x){
-    if (length(sets::as.set(x) & r) == 1){
+    if (length(sets::as.set(x) & r) == 1) {
       fs <<- paste(fs, x)
     }
   })
@@ -198,7 +198,7 @@ sentenceToSet <- function(sentence) {
   uw <- unique(w)
   fs <- NULL
   sapply(uw, function(x){
-    if (nchar(x) > 1){
+    if (nchar(x) > 1) {
       fs <<- paste(fs, x)
     }
   })
